@@ -8,6 +8,9 @@ services:
       POSTGRES_USER: autoparts
       POSTGRES_PASSWORD: O9chs9VW3tHcgkTEV65wFYrl9r99AeWL
     volumes:
-      - ./postgres/data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     ports:
       - "5440:5432"
+      
+volumes:
+  pgdata:
