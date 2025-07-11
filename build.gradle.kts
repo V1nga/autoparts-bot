@@ -13,12 +13,21 @@ repositories {
 
 dependencies {
     runtimeOnly("org.postgresql:postgresql")
+    implementation("com.vdurmont:emoji-java:5.1.1")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.telegram:telegrambots-springboot-longpolling-starter:9.0.0")
     implementation("org.telegram:telegrambots-client:9.0.0")
+    implementation("org.telegram:telegrambots-extensions:9.0.0")
+
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+
+    compileOnly("org.projectlombok:lombok:1.18.38")
+    annotationProcessor("org.projectlombok:lombok:1.18.38")
+
+    testCompileOnly("org.projectlombok:lombok:1.18.38")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
 }
 
 tasks.test {
