@@ -4,15 +4,16 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.TelegramClient;
 import ru.v1nga.autoparts.bot.callbacks.SearchCallback;
 import ru.v1nga.autoparts.bot.commands.StartCommand;
 import ru.v1nga.autoparts.bot.core.CallbackCommandLongPollingTelegramBot;
+import ru.v1nga.autoparts.bot.forms.SearchForm;
 
 @Component
 public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
@@ -25,15 +26,21 @@ public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
     @Autowired
     private SearchCallback searchCallback;
 
-    public AutopartsBot(@Value("${bot.token}") String botToken, @Value("${bot.name}") String botName) {
-        super(new OkHttpTelegramClient(botToken), true, () -> botName);
+    @Autowired
+    private SearchForm searchForm;
+
+    public AutopartsBot(TelegramClient telegramClient, @Value("${bot.token}") String botToken, @Value("${bot.name}") String botName) {
+        super(telegramClient, true, () -> botName);
         this.botToken = botToken;
     }
 
     @PostConstruct
     public void init() {
         register(startCommand);
+
         registerCallback(searchCallback);
+
+        registerForm(searchForm);
     }
 
     @Override

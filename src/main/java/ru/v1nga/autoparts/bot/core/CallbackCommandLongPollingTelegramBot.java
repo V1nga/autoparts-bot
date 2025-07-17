@@ -1,5 +1,7 @@
 package ru.v1nga.autoparts.bot.core;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.CommandLongPollingTelegramBot;
 import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -7,23 +9,26 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 import ru.v1nga.autoparts.bot.core.callback.BotCallback;
 import ru.v1nga.autoparts.bot.core.exceptions.CallbackNotFoundException;
 import ru.v1nga.autoparts.bot.core.form.BotForm;
-import ru.v1nga.autoparts.bot.core.form.FormSession;
+import ru.v1nga.autoparts.bot.core.form.FormRouter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+@Service
 public abstract class CallbackCommandLongPollingTelegramBot extends CommandLongPollingTelegramBot implements SpringLongPollingBot {
 
-    private final List<BotForm<FormSession>> forms = new ArrayList<>();
+    @Autowired
+    private FormRouter formRouter;
+
     private final List<BotCallback> callbacks = new ArrayList<>();
 
     public CallbackCommandLongPollingTelegramBot(TelegramClient telegramClient, boolean allowCommandsWithUsername, Supplier<String> botUsernameSupplier) {
         super(telegramClient, allowCommandsWithUsername, botUsernameSupplier);
     }
 
-    public final void registerForm(BotForm<FormSession> botForm) {
-        forms.add(botForm);
+    public final void registerForm(BotForm botForm) {
+        formRouter.registerForm(botForm);
     }
     public final void registerCallback(BotCallback botCallback) {
         callbacks.add(botCallback);
@@ -46,10 +51,8 @@ public abstract class CallbackCommandLongPollingTelegramBot extends CommandLongP
         } else {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 String chatId = update.getMessage().getChatId().toString();
-                String text = update.getMessage().getText();
-                formHandler.handleInput(chatId, text);
+                formRouter.handleInput(chatId, update.getMessage().getText());
             }
-//            this.processNonCommandOrCallbackUpdate(update);
         }
     }
 
