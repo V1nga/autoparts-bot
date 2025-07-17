@@ -5,22 +5,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
-import org.telegram.telegrambots.extensions.bots.commandbot.CommandLongPollingTelegramBot;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
-import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.v1nga.autoparts.bot.callbacks.SearchCallback;
 import ru.v1nga.autoparts.bot.commands.StartCommand;
+import ru.v1nga.autoparts.bot.core.CallbackCommandLongPollingTelegramBot;
 
 @Component
-public class AutopartsBot extends CommandLongPollingTelegramBot implements SpringLongPollingBot {
+public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
 
     private final String botToken;
 
     @Autowired
     private StartCommand startCommand;
+
+    @Autowired
+    private SearchCallback searchCallback;
 
     public AutopartsBot(@Value("${bot.token}") String botToken, @Value("${bot.name}") String botName) {
         super(new OkHttpTelegramClient(botToken), true, () -> botName);
@@ -30,6 +33,7 @@ public class AutopartsBot extends CommandLongPollingTelegramBot implements Sprin
     @PostConstruct
     public void init() {
         register(startCommand);
+        registerCallback(searchCallback);
     }
 
     @Override
@@ -43,7 +47,7 @@ public class AutopartsBot extends CommandLongPollingTelegramBot implements Sprin
     }
 
     @Override
-    public void processNonCommandUpdate(Update update) {
+    public void processNonCommandOrCallbackUpdate(Update update) {
         if (update.hasMessage()) {
             Message message = update.getMessage();
 

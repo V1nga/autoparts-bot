@@ -41,7 +41,7 @@ public class MainMenu implements Menu {
                                 InlineKeyboardButton
                                     .builder()
                                     .text(EmojiParser.parseToUnicode(":package: Заказы"))
-                                    .callbackData("orders")
+                                    .callbackData("search:test")
                                     .build()
                             )
                         )
