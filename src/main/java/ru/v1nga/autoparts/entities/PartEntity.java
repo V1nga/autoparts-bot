@@ -2,6 +2,7 @@ package ru.v1nga.autoparts.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
@@ -18,6 +19,7 @@ public class PartEntity {
     private long id;
 
     @NotNull
+    @Unique
     private String number;
 
     @NotNull

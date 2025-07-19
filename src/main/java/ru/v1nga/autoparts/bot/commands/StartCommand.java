@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.chat.Chat;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
-import ru.v1nga.autoparts.bot.menu.MainMenu;
+import ru.v1nga.autoparts.bot.menus.MainMenu;
 import ru.v1nga.autoparts.repositories.PartsRepository;
 
 import java.util.List;

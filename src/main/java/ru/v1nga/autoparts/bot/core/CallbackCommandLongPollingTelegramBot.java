@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 import ru.v1nga.autoparts.bot.core.callback.BotCallback;
 import ru.v1nga.autoparts.bot.core.exceptions.CallbackNotFoundException;
 import ru.v1nga.autoparts.bot.core.form.BotForm;
-import ru.v1nga.autoparts.bot.core.form.FormRouter;
+import ru.v1nga.autoparts.bot.core.form.BotFormRouter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 public abstract class CallbackCommandLongPollingTelegramBot extends CommandLongPollingTelegramBot implements SpringLongPollingBot {
 
     @Autowired
-    private FormRouter formRouter;
+    private BotFormRouter botFormRouter;
 
     private final List<BotCallback> callbacks = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public abstract class CallbackCommandLongPollingTelegramBot extends CommandLongP
     }
 
     public final void registerForm(BotForm botForm) {
-        formRouter.registerForm(botForm);
+        botFormRouter.registerForm(botForm);
     }
     public final void registerCallback(BotCallback botCallback) {
         callbacks.add(botCallback);
@@ -50,8 +50,8 @@ public abstract class CallbackCommandLongPollingTelegramBot extends CommandLongP
             );
         } else {
             if (update.hasMessage() && update.getMessage().hasText()) {
-                String chatId = update.getMessage().getChatId().toString();
-                formRouter.handleInput(chatId, update.getMessage().getText());
+                long chatId = update.getMessage().getChatId();
+                botFormRouter.handleInput(chatId, update.getMessage().getText());
             }
         }
     }

@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class FormSession implements IFormSession {
-    private String currentStep;
+public abstract class BotFormSession implements IBotFormSession {
+    private boolean complete;
 }

@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class FormRouter implements IFormRouter {
+public class BotFormRouter implements IBotFormRouter {
 
     private final Map<String, IBotForm> forms = new ConcurrentHashMap<>();
-    private final Map<String, IBotForm> activeForms = new ConcurrentHashMap<>();
+    private final Map<Long, IBotForm> activeForms = new ConcurrentHashMap<>();
 
     @Override
     public void registerForm(BotForm botForm) {
@@ -17,7 +17,7 @@ public class FormRouter implements IFormRouter {
     }
 
     @Override
-    public void startForm(String chatId, String formName) {
+    public void startForm(long chatId, String formName) {
         IBotForm form = forms.get(formName);
 
         if(form != null) {
@@ -27,7 +27,7 @@ public class FormRouter implements IFormRouter {
     }
 
     @Override
-    public void handleInput(String chatId, String message) {
+    public void handleInput(long chatId, String message) {
         IBotForm form = activeForms.get(chatId);
 
         if(form != null) {
