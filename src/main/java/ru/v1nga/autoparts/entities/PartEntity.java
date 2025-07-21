@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="car_parts")
+@Table(name = "car_parts")
 public class PartEntity {
 
     @Id

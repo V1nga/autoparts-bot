@@ -1,28 +1,27 @@
 package ru.v1nga.autoparts.bot.commands;
 
 import com.vdurmont.emoji.EmojiParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.chat.Chat;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
-import ru.v1nga.autoparts.bot.menus.MainMenu;
-import ru.v1nga.autoparts.repositories.PartsRepository;
+import ru.v1nga.autoparts.bot.buttons.HomeButton;
 
 import java.util.List;
 
 @Component
 public class StartCommand extends BotCommand {
 
-    private final MainMenu mainMenu;
-    private final PartsRepository partsRepository;
+    @Autowired
+    private HomeButton homeButton;
 
-    public StartCommand(MainMenu mainMenu, PartsRepository partsRepository) {
+    public StartCommand() {
         super("start", "Команда для запуска бота");
-        this.mainMenu = mainMenu;
-        this.partsRepository = partsRepository;
     }
 
     @Override
@@ -42,11 +41,15 @@ public class StartCommand extends BotCommand {
                         ))
                     )
                 )
+                .replyMarkup(
+                    InlineKeyboardMarkup
+                        .builder()
+                        .keyboard(List.of(homeButton.getRow()))
+                        .build()
+                )
                 .build();
-            SendMessage menuMessage = mainMenu.build(chat.getId());
 
             telegramClient.execute(helloMessage);
-            telegramClient.execute(menuMessage);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }

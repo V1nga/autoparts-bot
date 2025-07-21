@@ -29,7 +29,7 @@ public class PartCard extends Card<PartEntity> {
                 InlineKeyboardButton
                     .builder()
                     .text(EmojiParser.parseToUnicode(":shopping_cart: Добавить в корзину"))
-                    .callbackData("add_to_cart")
+                    .callbackData("add-to-cart:" + partEntity.getNumber())
                     .build()
             )
         );

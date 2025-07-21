@@ -10,6 +10,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
+import ru.v1nga.autoparts.bot.callbacks.AddCartCallback;
+import ru.v1nga.autoparts.bot.callbacks.GetCartCallback;
+import ru.v1nga.autoparts.bot.callbacks.GetMenuCallback;
 import ru.v1nga.autoparts.bot.callbacks.SearchCallback;
 import ru.v1nga.autoparts.bot.commands.StartCommand;
 import ru.v1nga.autoparts.bot.core.CallbackCommandLongPollingTelegramBot;
@@ -25,6 +28,12 @@ public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
 
     @Autowired
     private SearchCallback searchCallback;
+    @Autowired
+    private AddCartCallback addCartCallback;
+    @Autowired
+    private GetCartCallback getCartCallback;
+    @Autowired
+    private GetMenuCallback getMenuCallback;
 
     @Autowired
     private SearchForm searchForm;
@@ -39,6 +48,9 @@ public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
         register(startCommand);
 
         registerCallback(searchCallback);
+        registerCallback(addCartCallback);
+        registerCallback(getCartCallback);
+        registerCallback(getMenuCallback);
 
         registerForm(searchForm);
     }

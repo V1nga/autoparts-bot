@@ -2,37 +2,35 @@ package ru.v1nga.autoparts.bot.callbacks;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.chat.Chat;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 import ru.v1nga.autoparts.bot.core.callback.BotCallback;
-import ru.v1nga.autoparts.bot.core.form.BotFormRouter;
+import ru.v1nga.autoparts.bot.menus.MainMenu;
 
 @Component
-public class SearchCallback extends BotCallback {
+public class GetMenuCallback extends BotCallback {
 
     @Autowired
-    private BotFormRouter botFormRouter;
+    private MainMenu mainMenu;
 
-    public SearchCallback() {
-        super("search");
+    public GetMenuCallback() {
+        super("get-menu");
     }
 
     @Override
     public void execute(TelegramClient telegramClient, User user, Chat chat, CallbackQuery callbackQuery) {
         try {
-            telegramClient.execute(
-                DeleteMessage
-                    .builder()
-                    .chatId(chat.getId())
-                    .messageId(callbackQuery.getMessage().getMessageId())
-                    .build()
-            );
+            EditMessageText menuMessage = mainMenu
+                .build(
+                    chat.getId(),
+                    callbackQuery.getMessage().getMessageId()
+                );
 
-            botFormRouter.startForm(chat.getId(), "search");
+            telegramClient.execute(menuMessage);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }

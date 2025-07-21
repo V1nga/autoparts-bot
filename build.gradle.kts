@@ -14,6 +14,7 @@ repositories {
 dependencies {
     runtimeOnly("org.postgresql:postgresql")
     implementation("com.vdurmont:emoji-java:5.1.1")
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.telegram:telegrambots-springboot-longpolling-starter:9.0.0")

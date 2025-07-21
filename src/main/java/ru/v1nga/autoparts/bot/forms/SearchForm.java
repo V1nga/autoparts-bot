@@ -3,12 +3,16 @@ package ru.v1nga.autoparts.bot.forms;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
+import ru.v1nga.autoparts.bot.Utils;
 import ru.v1nga.autoparts.bot.cards.PartCard;
 import ru.v1nga.autoparts.bot.core.form.BotForm;
 import ru.v1nga.autoparts.bot.core.form.BotFormSession;
+import ru.v1nga.autoparts.bot.menus.ChooseActionMenu;
 import ru.v1nga.autoparts.entities.PartEntity;
 import ru.v1nga.autoparts.repositories.PartsRepository;
 
@@ -19,6 +23,9 @@ public class SearchForm extends BotForm {
 
     private final PartsRepository partsRepository;
     private final PartCard partCard;
+
+    @Autowired
+    private ChooseActionMenu chooseActionMenu;
 
     public SearchForm(TelegramClient telegramClient, PartsRepository partsRepository, PartCard partCard) {
         super("search", telegramClient);
@@ -52,7 +59,26 @@ public class SearchForm extends BotForm {
                 SendMessage foundedMessage = SendMessage
                     .builder()
                     .chatId(chatId)
-                    .text(EmojiParser.parseToUnicode(":white_check_mark: Найдено:"))
+                    .text(
+                        EmojiParser.parseToUnicode(
+                            String.format(
+                                ":white_check_mark: %s %d %s",
+                                Utils.pluralize(
+                                    parts.size(),
+                                    "Найдена",
+                                    "Найдено",
+                                    "Найдено"
+                                ),
+                                parts.size(),
+                                Utils.pluralize(
+                                    parts.size(),
+                                    "запчасть",
+                                    "запчасти",
+                                    "запчастей"
+                                )
+                            )
+                        )
+                    )
                     .build();
                 send(foundedMessage);
 
@@ -66,10 +92,21 @@ public class SearchForm extends BotForm {
                             String.format(":no_entry_sign: Запчасть с артикулом \"%s\" не найдена", message)
                         )
                     )
+                    .replyMarkup(InlineKeyboardMarkup
+                        .builder()
+                        .keyboard(
+                            List.of(
+
+                            )
+                        )
+                        .build()
+                    )
                     .build();
 
                 send(notFoundPart);
             }
+
+            send(chooseActionMenu.build(chatId));
         }
     }
 

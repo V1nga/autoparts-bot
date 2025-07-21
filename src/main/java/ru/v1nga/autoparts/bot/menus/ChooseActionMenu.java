@@ -9,12 +9,13 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import ru.v1nga.autoparts.bot.core.menu.Menu;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
-public class MainMenu extends Menu {
+public class ChooseActionMenu extends Menu {
 
     private String getTitle() {
-        return EmojiParser.parseToUnicode(":gear: Магазин \"Autoparts\" :gear:");
+        return EmojiParser.parseToUnicode(":radio_button: Выберите действие или вернитесь в главное меню:");
     }
 
     private List<InlineKeyboardRow> getKeyboard() {
@@ -22,21 +23,8 @@ public class MainMenu extends Menu {
             new InlineKeyboardRow(
                 InlineKeyboardButton
                     .builder()
-                    .text(EmojiParser.parseToUnicode(":mag: Поиск запчасти"))
-                    .callbackData("search")
-                    .build()
-            ),
-            new InlineKeyboardRow(
-                InlineKeyboardButton
-                    .builder()
-                    .text(EmojiParser.parseToUnicode(":shopping_cart: Корзина"))
-                    .callbackData("get-cart")
-                    .build(),
-
-                InlineKeyboardButton
-                    .builder()
-                    .text(EmojiParser.parseToUnicode(":package: Заказы"))
-                    .callbackData("search:test")
+                    .text(EmojiParser.parseToUnicode(":house: Главное меню"))
+                    .callbackData("get-menu")
                     .build()
             )
         );
@@ -50,5 +38,13 @@ public class MainMenu extends Menu {
     @Override
     public EditMessageText build(long chatId, int messageId) {
         return buildMessage(chatId, messageId, getTitle(), getKeyboard());
+    }
+
+    public SendMessage build(long chatId, List<InlineKeyboardRow> buttons) {
+        return buildMessage(chatId, getTitle(), Stream.concat(getKeyboard().stream(), buttons.stream()).toList());
+    }
+
+    public EditMessageText build(long chatId, int messageId, List<InlineKeyboardRow> buttons) {
+        return buildMessage(chatId, messageId, getTitle(), Stream.concat(getKeyboard().stream(), buttons.stream()).toList());
     }
 }
