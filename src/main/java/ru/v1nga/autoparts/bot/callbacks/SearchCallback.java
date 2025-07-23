@@ -24,6 +24,6 @@ public class SearchCallback extends BotCallback {
 
     @Override
     public void execute(TelegramClient telegramClient, User user, Chat chat, CallbackQuery callbackQuery) {
-        botFormRouter.startForm(chat.getId(), "search", callbackQuery);
+        botFormRouter.startForm(chat, "search", callbackQuery);
     }
 }

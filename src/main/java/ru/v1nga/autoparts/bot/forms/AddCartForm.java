@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.chat.Chat;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
@@ -41,16 +43,16 @@ public class AddCartForm extends BotForm {
     }
 
     @Override
-    public void start(long chatId, CallbackQuery callbackQuery) {
+    public void start(Chat chat, CallbackQuery callbackQuery) {
         AddCartFormSession session = new AddCartFormSession();
         session.setPartNumber(Utils.getCallbackData(callbackQuery));
 
-        setSession(chatId, session);
+        setSession(chat.getId(), session);
 
         send(
             EditMessageText
                 .builder()
-                .chatId(chatId)
+                .chatId(chat.getId())
                 .text(
                     EmojiParser.parseToUnicode(":gear: Введите количество")
                 )
@@ -60,8 +62,8 @@ public class AddCartForm extends BotForm {
     }
 
     @Override
-    public void handleInput(long chatId, long userId, String message) {
-        AddCartFormSession session = (AddCartFormSession) getSession(chatId);
+    public void handleInput(Chat chat, User user, String message) {
+        AddCartFormSession session = (AddCartFormSession) getSession(chat.getId());
 
         if (session == null) {
             return;
@@ -72,7 +74,7 @@ public class AddCartForm extends BotForm {
                 send(
                     SendMessage
                         .builder()
-                        .chatId(chatId)
+                        .chatId(chat.getId())
                         .text(
                             EmojiParser.parseToUnicode(":warning: Значение не может быть меньше 1")
                         )
@@ -82,7 +84,7 @@ public class AddCartForm extends BotForm {
                 send(
                     SendMessage
                         .builder()
-                        .chatId(chatId)
+                        .chatId(chat.getId())
                         .text(
                             EmojiParser.parseToUnicode(":gear: Введите количество")
                         )
@@ -96,8 +98,8 @@ public class AddCartForm extends BotForm {
                 PartEntity partEntity = partsRepository.findByNumber(partNumber).orElseThrow();
 
                 CartItemEntity cartItem = cartItemsRepository
-                        .findByUserIdAndPart(userId, partEntity)
-                        .orElseGet(() -> new CartItemEntity(0, userId, partEntity, 0));
+                        .findByUserIdAndPart(user.getId(), partEntity)
+                        .orElseGet(() -> new CartItemEntity(0, user.getId(), partEntity, 0));
                 cartItem.setQuantity(session.getQuantity());
 
                 cartItemsRepository.save(cartItem);
@@ -105,7 +107,7 @@ public class AddCartForm extends BotForm {
                 send(
                     SendMessage
                         .builder()
-                        .chatId(chatId)
+                        .chatId(chat.getId())
                         .text(
                             EmojiParser.parseToUnicode(":white_check_mark: Запчасть успешно добавлена в :shopping_cart:")
                         )
@@ -127,8 +129,8 @@ public class AddCartForm extends BotForm {
     }
 
     @Override
-    public boolean isCompleted(long chatId) {
-        return getSession(chatId).isComplete();
+    public boolean isCompleted(Chat chat) {
+        return getSession(chat.getId()).isComplete();
     }
 
     @Getter

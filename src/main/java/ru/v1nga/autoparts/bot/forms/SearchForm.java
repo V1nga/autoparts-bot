@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.chat.Chat;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
@@ -43,14 +45,14 @@ public class SearchForm extends BotForm {
     }
 
     @Override
-    public void start(long chatId, CallbackQuery callbackQuery) {
+    public void start(Chat chat, CallbackQuery callbackQuery) {
         SearchFormSession session = new SearchFormSession();
-        setSession(chatId, session);
+        setSession(chat.getId(), session);
 
         send(
             EditMessageText
                 .builder()
-                .chatId(chatId)
+                .chatId(chat.getId())
                 .text(
                     EmojiParser.parseToUnicode(":mag: Введите артикул запчасти")
                 )
@@ -60,8 +62,8 @@ public class SearchForm extends BotForm {
     }
 
     @Override
-    public void handleInput(long chatId, long userId, String message) {
-        SearchFormSession session = (SearchFormSession) getSession(chatId);
+    public void handleInput(Chat chat, User user, String message) {
+        SearchFormSession session = (SearchFormSession) getSession(chat.getId());
 
         if (session == null) {
             return;
@@ -76,7 +78,7 @@ public class SearchForm extends BotForm {
             if(!parts.isEmpty()) {
                 SendMessage foundedMessage = SendMessage
                     .builder()
-                    .chatId(chatId)
+                    .chatId(chat.getId())
                     .text(
                         EmojiParser.parseToUnicode(
                             String.format(
@@ -128,7 +130,7 @@ public class SearchForm extends BotForm {
             } else {
                 SendMessage notFoundPart = SendMessage
                     .builder()
-                    .chatId(chatId)
+                    .chatId(chat.getId())
                     .text(
                         EmojiParser.parseToUnicode(
                             String.format(":no_entry_sign: Запчасть с артикулом \"%s\" не найдена", message)
@@ -146,14 +148,14 @@ public class SearchForm extends BotForm {
                     .build();
 
                 send(notFoundPart);
-                send(chooseActionMenu.build(chatId));
+                send(chooseActionMenu.build(chat.getId()));
             }
         }
     }
 
     @Override
-    public boolean isCompleted(long chatId) {
-        return getSession(chatId).isComplete();
+    public boolean isCompleted(Chat chat) {
+        return getSession(chat.getId()).isComplete();
     }
 
     @Getter

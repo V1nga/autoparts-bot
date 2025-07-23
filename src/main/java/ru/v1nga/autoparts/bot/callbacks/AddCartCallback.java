@@ -21,6 +21,6 @@ public class AddCartCallback extends BotCallback {
 
     @Override
     public void execute(TelegramClient telegramClient, User user, Chat chat, CallbackQuery callbackQuery) {
-        botFormRouter.startForm(chat.getId(), "add-cart", callbackQuery);
+        botFormRouter.startForm(chat, "add-cart", callbackQuery);
     }
 }
