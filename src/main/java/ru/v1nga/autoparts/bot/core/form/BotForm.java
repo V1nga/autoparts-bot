@@ -1,5 +1,6 @@
 package ru.v1nga.autoparts.bot.core.form;
 
+import com.vdurmont.emoji.EmojiParser;
 import lombok.RequiredArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -32,6 +33,18 @@ public abstract class BotForm implements IBotForm {
 
     protected void send(long chatId, String message) {
         send(SendMessage.builder().chatId(chatId).text(message).build());
+    }
+
+    protected void sendError(long chatId, String message) {
+        send(
+            SendMessage
+                .builder()
+                .chatId(chatId)
+                .text(
+                    EmojiParser.parseToUnicode(":x: " + message)
+                )
+                .build()
+        );
     }
 
     protected void send(SendMessage message) {

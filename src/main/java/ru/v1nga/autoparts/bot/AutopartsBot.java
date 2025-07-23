@@ -14,6 +14,7 @@ import ru.v1nga.autoparts.bot.callbacks.*;
 import ru.v1nga.autoparts.bot.commands.StartCommand;
 import ru.v1nga.autoparts.bot.core.CallbackCommandLongPollingTelegramBot;
 import ru.v1nga.autoparts.bot.forms.AddCartForm;
+import ru.v1nga.autoparts.bot.forms.InformationFillForm;
 import ru.v1nga.autoparts.bot.forms.SearchForm;
 
 @Component
@@ -36,11 +37,16 @@ public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
     private GetMenuCallback getMenuCallback;
     @Autowired
     private GetPartDetailsCallback getPartDetailsCallback;
+    @Autowired
+    private InformationFillCallback informationFillCallback;
 
     @Autowired
     private SearchForm searchForm;
     @Autowired
     private AddCartForm addCartForm;
+    @Autowired
+    private InformationFillForm informationFillForm;
+
 
     public AutopartsBot(TelegramClient telegramClient, @Value("${bot.token}") String botToken, @Value("${bot.name}") String botName) {
         super(telegramClient, true, () -> botName);
@@ -57,9 +63,11 @@ public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
         registerCallback(getCartCallback);
         registerCallback(getMenuCallback);
         registerCallback(getPartDetailsCallback);
+        registerCallback(informationFillCallback);
 
         registerForm(searchForm);
         registerForm(addCartForm);
+        registerForm(informationFillForm);
     }
 
     @Override

@@ -44,6 +44,22 @@ public final class Utils {
         }
     }
 
+    public static String escapeMarkdownV2(String text) {
+        String[] specialChars = {
+            "_", "*", "[", "]", "(", ")", "~", "`", ">", "#", "+", "-", "=", "|", "{", "}", ".", "!"
+        };
+
+        for (String ch : specialChars) {
+            text = text.replace(ch, "\\" + ch);
+        }
+
+        return text;
+    }
+
+    public static boolean isValidPhoneNumber(String phoneNumber) {
+        return phoneNumber.matches("^\\+7\\d{10}$");
+    }
+
     public static boolean isInteger(String str) {
         try {
             Integer.parseInt(str);

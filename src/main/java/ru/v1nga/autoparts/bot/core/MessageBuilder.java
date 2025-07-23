@@ -14,7 +14,8 @@ public abstract class MessageBuilder {
             .builder()
             .chatId(chatId)
             .text(text)
-            .replyMarkup(InlineKeyboardMarkup
+            .replyMarkup(
+                InlineKeyboardMarkup
                 .builder()
                 .keyboard(keyboard)
                 .build()
@@ -28,7 +29,8 @@ public abstract class MessageBuilder {
             .chatId(chatId)
             .messageId(messageId)
             .text(text)
-            .replyMarkup(InlineKeyboardMarkup
+            .replyMarkup(
+                InlineKeyboardMarkup
                 .builder()
                 .keyboard(keyboard)
                 .build()
