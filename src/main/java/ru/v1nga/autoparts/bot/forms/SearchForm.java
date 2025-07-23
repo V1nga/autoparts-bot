@@ -6,9 +6,14 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 import ru.v1nga.autoparts.bot.Utils;
+import ru.v1nga.autoparts.bot.buttons.HomeButton;
 import ru.v1nga.autoparts.bot.cards.PartCard;
 import ru.v1nga.autoparts.bot.core.form.BotForm;
 import ru.v1nga.autoparts.bot.core.form.BotFormSession;
@@ -17,12 +22,16 @@ import ru.v1nga.autoparts.entities.PartEntity;
 import ru.v1nga.autoparts.repositories.PartsRepository;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 public class SearchForm extends BotForm {
 
     private final PartsRepository partsRepository;
     private final PartCard partCard;
+
+    @Autowired
+    private HomeButton homeButton;
 
     @Autowired
     private ChooseActionMenu chooseActionMenu;
@@ -34,15 +43,24 @@ public class SearchForm extends BotForm {
     }
 
     @Override
-    public void start(long chatId) {
+    public void start(long chatId, CallbackQuery callbackQuery) {
         SearchFormSession session = new SearchFormSession();
         setSession(chatId, session);
 
-        send(chatId, EmojiParser.parseToUnicode(":mag: Введите артикул запчасти"));
+        send(
+            EditMessageText
+                .builder()
+                .chatId(chatId)
+                .text(
+                    EmojiParser.parseToUnicode(":mag: Введите артикул запчасти")
+                )
+                .messageId(callbackQuery.getMessage().getMessageId())
+                .build()
+        );
     }
 
     @Override
-    public void handleInput(long chatId, String message) {
+    public void handleInput(long chatId, long userId, String message) {
         SearchFormSession session = (SearchFormSession) getSession(chatId);
 
         if (session == null) {
@@ -79,10 +97,34 @@ public class SearchForm extends BotForm {
                             )
                         )
                     )
+                    .replyMarkup(
+                        InlineKeyboardMarkup
+                            .builder()
+                            .keyboard(
+                                Stream.concat(
+                                    parts
+                                        .stream()
+                                        .map(partEntity ->
+                                            new InlineKeyboardRow(
+                                                InlineKeyboardButton
+                                                    .builder()
+                                                    .text(partEntity.getNumber())
+                                                    .callbackData("get-part-details:" + partEntity.getNumber())
+                                                    .build()
+                                            )
+                                        ),
+                                    Stream.of(
+                                        new InlineKeyboardRow(
+                                            homeButton.get()
+                                        )
+                                    )
+                                ).toList()
+                            )
+                            .build()
+                    )
                     .build();
-                send(foundedMessage);
 
-                parts.forEach(partEntity -> send(partCard.build(chatId, partEntity)));
+                send(foundedMessage);
             } else {
                 SendMessage notFoundPart = SendMessage
                     .builder()
@@ -104,9 +146,8 @@ public class SearchForm extends BotForm {
                     .build();
 
                 send(notFoundPart);
+                send(chooseActionMenu.build(chatId));
             }
-
-            send(chooseActionMenu.build(chatId));
         }
     }
 

@@ -68,7 +68,7 @@ public class CartMenu extends PaginationMenu<CartItemEntity> {
                                 ":pencil2: Изменить кол-во"
                                 )
                             )
-                            .callbackData("test")
+                            .callbackData("add-to-cart:" + cartItemEntity.getPart().getNumber())
                             .build(),
                         InlineKeyboardButton
                             .builder()
@@ -77,7 +77,7 @@ public class CartMenu extends PaginationMenu<CartItemEntity> {
                                 ":x: Удалить"
                                 )
                             )
-                            .callbackData("test")
+                            .callbackData("delete-from-cart:" + cartItemEntity.getId())
                             .build()
                     ),
                     new InlineKeyboardRow(

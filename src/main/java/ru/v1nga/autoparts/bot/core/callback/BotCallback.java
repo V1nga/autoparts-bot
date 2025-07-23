@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.chat.Chat;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
+import ru.v1nga.autoparts.bot.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,28 +21,11 @@ public abstract class BotCallback implements IBotCallback {
     }
 
     protected String getCallbackParam(CallbackQuery callbackQuery) {
-        String[] callbackData = callbackQuery.getData().split(":");
-
-        return callbackData.length > 1 ? callbackData[1] : null;
+        return Utils.getCallbackData(callbackQuery);
     }
 
     protected String getCallbackNamedParam(CallbackQuery callbackQuery, String paramName) {
-        String query = getCallbackParam(callbackQuery);
-
-        if(query != null) {
-            Map<String, String> params = new HashMap<>();
-
-            for (String pair : query.split("&")) {
-                String[] parts = pair.split("=", 2);
-                if (parts.length == 2) {
-                    params.put(parts[0], parts[1]);
-                }
-            }
-
-            return params.get(paramName);
-        } else {
-            return null;
-        }
+       return Utils.getCallbackParam(callbackQuery, paramName);
     }
 
     public abstract void execute(TelegramClient telegramClient, User user, Chat chat, CallbackQuery callbackQuery);

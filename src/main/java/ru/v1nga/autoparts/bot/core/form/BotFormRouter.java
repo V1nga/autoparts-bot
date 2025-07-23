@@ -1,6 +1,7 @@
 package ru.v1nga.autoparts.bot.core.form;
 
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,21 +18,21 @@ public class BotFormRouter implements IBotFormRouter {
     }
 
     @Override
-    public void startForm(long chatId, String formName) {
+    public void startForm(long chatId, String formName, CallbackQuery callbackQuery) {
         IBotForm form = forms.get(formName);
 
         if(form != null) {
             activeForms.put(chatId, form);
-            form.start(chatId);
+            form.start(chatId, callbackQuery);
         }
     }
 
     @Override
-    public void handleInput(long chatId, String message) {
+    public void handleInput(long chatId, long userId, String message) {
         IBotForm form = activeForms.get(chatId);
 
         if(form != null) {
-            form.handleInput(chatId, message);
+            form.handleInput(chatId, userId, message);
 
             if(form.isCompleted(chatId)) {
                 activeForms.remove(chatId);

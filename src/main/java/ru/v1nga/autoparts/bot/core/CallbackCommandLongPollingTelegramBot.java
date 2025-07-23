@@ -51,7 +51,7 @@ public abstract class CallbackCommandLongPollingTelegramBot extends CommandLongP
         } else {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 long chatId = update.getMessage().getChatId();
-                botFormRouter.handleInput(chatId, update.getMessage().getText());
+                botFormRouter.handleInput(chatId, update.getMessage().getFrom().getId(), update.getMessage().getText());
             }
         }
     }

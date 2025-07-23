@@ -10,12 +10,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
-import ru.v1nga.autoparts.bot.callbacks.AddCartCallback;
-import ru.v1nga.autoparts.bot.callbacks.GetCartCallback;
-import ru.v1nga.autoparts.bot.callbacks.GetMenuCallback;
-import ru.v1nga.autoparts.bot.callbacks.SearchCallback;
+import ru.v1nga.autoparts.bot.callbacks.*;
 import ru.v1nga.autoparts.bot.commands.StartCommand;
 import ru.v1nga.autoparts.bot.core.CallbackCommandLongPollingTelegramBot;
+import ru.v1nga.autoparts.bot.forms.AddCartForm;
 import ru.v1nga.autoparts.bot.forms.SearchForm;
 
 @Component
@@ -31,12 +29,18 @@ public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
     @Autowired
     private AddCartCallback addCartCallback;
     @Autowired
+    private DeleteFromCartCallback deleteFromCartCallback;
+    @Autowired
     private GetCartCallback getCartCallback;
     @Autowired
     private GetMenuCallback getMenuCallback;
+    @Autowired
+    private GetPartDetailsCallback getPartDetailsCallback;
 
     @Autowired
     private SearchForm searchForm;
+    @Autowired
+    private AddCartForm addCartForm;
 
     public AutopartsBot(TelegramClient telegramClient, @Value("${bot.token}") String botToken, @Value("${bot.name}") String botName) {
         super(telegramClient, true, () -> botName);
@@ -49,10 +53,13 @@ public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
 
         registerCallback(searchCallback);
         registerCallback(addCartCallback);
+        registerCallback(deleteFromCartCallback);
         registerCallback(getCartCallback);
         registerCallback(getMenuCallback);
+        registerCallback(getPartDetailsCallback);
 
         registerForm(searchForm);
+        registerForm(addCartForm);
     }
 
     @Override

@@ -2,6 +2,7 @@ package ru.v1nga.autoparts.bot.core.form;
 
 import lombok.RequiredArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
@@ -34,6 +35,14 @@ public abstract class BotForm implements IBotForm {
     }
 
     protected void send(SendMessage message) {
+        try {
+            telegramClient.execute(message);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void send(EditMessageText message) {
         try {
             telegramClient.execute(message);
         } catch (TelegramApiException e) {
