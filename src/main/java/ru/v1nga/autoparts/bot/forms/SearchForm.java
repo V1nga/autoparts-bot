@@ -16,10 +16,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 import ru.v1nga.autoparts.bot.Utils;
 import ru.v1nga.autoparts.bot.buttons.HomeButton;
+import ru.v1nga.autoparts.bot.buttons.SearchButton;
 import ru.v1nga.autoparts.bot.cards.PartCard;
 import ru.v1nga.autoparts.bot.core.form.BotForm;
 import ru.v1nga.autoparts.bot.core.form.BotFormSession;
-import ru.v1nga.autoparts.bot.menus.ChooseActionMenu;
 import ru.v1nga.autoparts.entities.PartEntity;
 import ru.v1nga.autoparts.repositories.PartsRepository;
 
@@ -30,18 +30,15 @@ import java.util.stream.Stream;
 public class SearchForm extends BotForm {
 
     private final PartsRepository partsRepository;
-    private final PartCard partCard;
 
     @Autowired
     private HomeButton homeButton;
-
     @Autowired
-    private ChooseActionMenu chooseActionMenu;
+    private SearchButton searchButton;
 
-    public SearchForm(TelegramClient telegramClient, PartsRepository partsRepository, PartCard partCard) {
+    public SearchForm(TelegramClient telegramClient, PartsRepository partsRepository) {
         super("search", telegramClient);
         this.partsRepository = partsRepository;
-        this.partCard = partCard;
     }
 
     @Override
@@ -140,7 +137,8 @@ public class SearchForm extends BotForm {
                         .builder()
                         .keyboard(
                             List.of(
-
+                                new InlineKeyboardRow(searchButton.get()),
+                                new InlineKeyboardRow(homeButton.get())
                             )
                         )
                         .build()
@@ -148,7 +146,6 @@ public class SearchForm extends BotForm {
                     .build();
 
                 send(notFoundPart);
-                send(chooseActionMenu.build(chat.getId()));
             }
         }
     }

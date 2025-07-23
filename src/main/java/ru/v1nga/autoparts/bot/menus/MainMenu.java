@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 import ru.v1nga.autoparts.bot.buttons.CartButton;
+import ru.v1nga.autoparts.bot.buttons.SearchButton;
 import ru.v1nga.autoparts.bot.core.menu.Menu;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public class MainMenu extends Menu {
 
     @Autowired
     private CartButton cartButton;
+    @Autowired
+    private SearchButton searchButton;
 
     private String getTitle() {
         return EmojiParser.parseToUnicode(":gear: Магазин \"Autoparts\" :gear:");
@@ -25,11 +28,7 @@ public class MainMenu extends Menu {
     private List<InlineKeyboardRow> getKeyboard() {
         return List.of(
             new InlineKeyboardRow(
-                InlineKeyboardButton
-                    .builder()
-                    .text(EmojiParser.parseToUnicode(":mag: Поиск запчасти"))
-                    .callbackData("search")
-                    .build()
+                searchButton.get()
             ),
             new InlineKeyboardRow(
                 cartButton.get(),
