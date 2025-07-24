@@ -28,6 +28,8 @@ public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
     @Autowired
     private DeleteFromCartCallback deleteFromCartCallback;
     @Autowired
+    private ClearCartCallback clearCartCallback;
+    @Autowired
     private GetCartCallback getCartCallback;
     @Autowired
     private GetMenuCallback getMenuCallback;
@@ -56,6 +58,7 @@ public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
         registerCallback(searchCallback);
         registerCallback(addCartCallback);
         registerCallback(deleteFromCartCallback);
+        registerCallback(clearCartCallback);
         registerCallback(getCartCallback);
         registerCallback(getMenuCallback);
         registerCallback(getPartDetailsCallback);

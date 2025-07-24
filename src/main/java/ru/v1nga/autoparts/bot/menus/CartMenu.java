@@ -12,6 +12,7 @@ import ru.v1nga.autoparts.bot.buttons.HomeButton;
 import ru.v1nga.autoparts.bot.core.menu.PaginationMenu;
 import ru.v1nga.autoparts.entities.CartItemEntity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
@@ -41,6 +42,7 @@ public class CartMenu extends PaginationMenu<CartItemEntity> {
 
     private List<InlineKeyboardRow> getKeyboard(int page, List<CartItemEntity> cartItemEntities) {
         InlineKeyboardRow paginationButtons = getPaginationButton(page, cartItemEntities.size());
+        InlineKeyboardRow clearCartButton = getClearCartButton(cartItemEntities.size());
 
         List<InlineKeyboardRow> buttons = getItems(page, cartItemEntities)
             .stream()
@@ -88,7 +90,27 @@ public class CartMenu extends PaginationMenu<CartItemEntity> {
             .flatMap(Collection::stream)
             .toList();
 
-        return Stream.concat(buttons.stream(), Stream.of(paginationButtons, homeButton.getRow())).toList();
+        List<InlineKeyboardRow> footerButtons = List.of(
+            paginationButtons,
+            clearCartButton,
+            homeButton.getRow()
+        );
+
+        return Stream.concat(buttons.stream(), footerButtons.stream()).toList();
+    }
+
+    private InlineKeyboardRow getClearCartButton(int totalItems) {
+        if(totalItems > 0) {
+            return new InlineKeyboardRow(
+                InlineKeyboardButton
+                    .builder()
+                    .text(EmojiParser.parseToUnicode(":broom: Очистить корзину"))
+                    .callbackData("clear-cart")
+                    .build()
+            );
+        } else {
+            return new InlineKeyboardRow();
+        }
     }
 
     @Override
