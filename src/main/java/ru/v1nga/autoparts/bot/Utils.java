@@ -48,7 +48,7 @@ public final class Utils {
 
     public static String escapeMarkdownV2(String text) {
         String[] specialChars = {
-            "_", "*", "[", "]", "(", ")", "~", "`", ">", "#", "+", "-", "=", "|", "{", "}", ".", "!"
+            "!", "-"
         };
 
         for (String ch : specialChars) {
