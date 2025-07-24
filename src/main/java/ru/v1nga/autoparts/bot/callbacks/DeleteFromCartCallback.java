@@ -36,7 +36,7 @@ public class DeleteFromCartCallback extends BotCallback {
     @Override
     public void execute(TelegramClient telegramClient, User user, Chat chat, CallbackQuery callbackQuery) {
         try {
-            String cartItemId = getCallbackParam(callbackQuery);
+            String cartItemId = getCallbackData(callbackQuery);
             cartItemsRepository.deleteById(Long.parseLong(cartItemId));
 
             EditMessageText deleteMessage = EditMessageText.builder()

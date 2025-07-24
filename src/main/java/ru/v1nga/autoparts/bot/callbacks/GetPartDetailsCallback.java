@@ -28,7 +28,7 @@ public class GetPartDetailsCallback extends BotCallback {
     @Override
     public void execute(TelegramClient telegramClient, User user, Chat chat, CallbackQuery callbackQuery) {
         try {
-            String partNumber = getCallbackParam(callbackQuery);
+            String partNumber = getCallbackData(callbackQuery);
             PartEntity partEntity = partsRepository.findByNumber(partNumber).orElseThrow();
 
             telegramClient.execute(partCard.build(chat.getId(), callbackQuery.getMessage().getMessageId(), partEntity));

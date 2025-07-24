@@ -20,11 +20,11 @@ public abstract class BotCallback implements IBotCallback {
         return this.callbackIdentifier;
     }
 
-    protected String getCallbackParam(CallbackQuery callbackQuery) {
+    protected String getCallbackData(CallbackQuery callbackQuery) {
         return Utils.getCallbackData(callbackQuery);
     }
 
-    protected String getCallbackNamedParam(CallbackQuery callbackQuery, String paramName) {
+    protected String getCallbackParam(CallbackQuery callbackQuery, String paramName) {
        return Utils.getCallbackParam(callbackQuery, paramName);
     }
 

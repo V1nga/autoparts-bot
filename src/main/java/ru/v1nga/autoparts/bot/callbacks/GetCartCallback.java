@@ -31,7 +31,7 @@ public class GetCartCallback extends BotCallback {
     @Override
     public void execute(TelegramClient telegramClient, User user, Chat chat, CallbackQuery callbackQuery) {
         try {
-            String callbackParam = getCallbackParam(callbackQuery);
+            String callbackParam = getCallbackData(callbackQuery);
             List<CartItemEntity> cartItemEntities = cartItemsRepository.findByUserId(user.getId());
 
             int page = callbackParam == null ? 1 : Integer.parseInt(callbackParam);
