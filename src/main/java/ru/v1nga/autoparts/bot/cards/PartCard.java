@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
+import ru.v1nga.autoparts.bot.Utils;
 import ru.v1nga.autoparts.bot.core.card.Card;
 import ru.v1nga.autoparts.entities.PartEntity;
 
@@ -16,12 +17,9 @@ public class PartCard extends Card<PartEntity> {
 
     private String getBody(PartEntity partEntity) {
         return EmojiParser.parseToUnicode(
-            String.join(
-                "\n",
-                List.of(
-                    ":wrench: Артикул: " + partEntity.getNumber(),
-                    ":memo: Описание: " + partEntity.getDescription()
-                )
+            Utils.buildMultiline(
+                ":wrench: Артикул: " + partEntity.getNumber(),
+                ":memo: Описание: " + partEntity.getDescription()
             )
         );
     }

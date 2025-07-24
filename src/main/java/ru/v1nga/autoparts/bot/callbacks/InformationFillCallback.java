@@ -1,6 +1,5 @@
 package ru.v1nga.autoparts.bot.callbacks;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -12,11 +11,11 @@ import ru.v1nga.autoparts.bot.core.form.BotFormRouter;
 @Component
 public class InformationFillCallback extends BotCallback {
 
-    @Autowired
-    private BotFormRouter botFormRouter;
+    private final BotFormRouter botFormRouter;
 
-    public InformationFillCallback() {
+    public InformationFillCallback(BotFormRouter botFormRouter) {
         super("information-fill");
+        this.botFormRouter = botFormRouter;
     }
 
     @Override

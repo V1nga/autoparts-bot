@@ -44,7 +44,7 @@ public class StartCommand extends BotCommand {
                     .text(
                         Utils.escapeMarkdownV2(
                             EmojiParser.parseToUnicode(
-                                String.join("\n", List.of(
+                                Utils.buildMultiline(
                                     ":wave: Мы рады видеть вас!",
                                     "",
                                     "Я - бот магазина автозапчастей и помогу вам:",
@@ -54,7 +54,7 @@ public class StartCommand extends BotCommand {
                                     ":warning: *Перед началом использования бота* :robot_face:",
                                     "Пожалуйста, укажите ваше *ФИО* :bust_in_silhouette: и *номер телефона* :telephone:",
                                     "Эти данные необходимы для вашей идентификации и обработки заказов :white_check_mark:"
-                                ))
+                                )
                             )
                         )
                     )

@@ -11,7 +11,6 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.chat.Chat;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 import ru.v1nga.autoparts.bot.Utils;
 import ru.v1nga.autoparts.bot.buttons.CartButton;
@@ -53,9 +52,7 @@ public class AddCartForm extends BotForm {
             EditMessageText
                 .builder()
                 .chatId(chat.getId())
-                .text(
-                    EmojiParser.parseToUnicode(":gear: Введите количество")
-                )
+                .text(getCountFieldText())
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .build()
         );
@@ -71,25 +68,8 @@ public class AddCartForm extends BotForm {
 
         if(session.getQuantity() == 0) {
             if(!Utils.isInteger(message) || Integer.parseInt(message) < 1) {
-                send(
-                    SendMessage
-                        .builder()
-                        .chatId(chat.getId())
-                        .text(
-                            EmojiParser.parseToUnicode(":warning: Значение не может быть меньше 1")
-                        )
-                        .build()
-                );
-
-                send(
-                    SendMessage
-                        .builder()
-                        .chatId(chat.getId())
-                        .text(
-                            EmojiParser.parseToUnicode(":gear: Введите количество")
-                        )
-                        .build()
-                );
+                sendError(chat.getId(), "Значение не может быть меньше 1");
+                send(chat.getId(), getCountFieldText());
             } else {
                 session.setQuantity(Integer.parseInt(message));
                 session.setComplete(true);
@@ -116,8 +96,8 @@ public class AddCartForm extends BotForm {
                                 .builder()
                                 .keyboard(
                                     List.of(
-                                        new InlineKeyboardRow(cartButton.get()),
-                                        new InlineKeyboardRow(homeButton.get())
+                                        cartButton.getRow(),
+                                        homeButton.getRow()
                                     )
                                 )
                                 .build()
@@ -131,6 +111,10 @@ public class AddCartForm extends BotForm {
     @Override
     public boolean isCompleted(Chat chat) {
         return getSession(chat.getId()).isComplete();
+    }
+
+    private String getCountFieldText () {
+        return EmojiParser.parseToUnicode(":gear: Введите количество");
     }
 
     @Getter

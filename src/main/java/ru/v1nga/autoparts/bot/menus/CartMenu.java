@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
+import ru.v1nga.autoparts.bot.Utils;
 import ru.v1nga.autoparts.bot.buttons.HomeButton;
 import ru.v1nga.autoparts.bot.core.menu.PaginationMenu;
 import ru.v1nga.autoparts.entities.CartItemEntity;
@@ -27,8 +28,7 @@ public class CartMenu extends PaginationMenu<CartItemEntity> {
         if(cartItemEntities.isEmpty()) {
             return
                 EmojiParser.parseToUnicode(
-                    String.join(
-                        "\n",
+                    Utils.buildMultiline(
                         title,
                         "",
                         "Тут пока ничего нет! Добавьте что-нибудь :blush:"

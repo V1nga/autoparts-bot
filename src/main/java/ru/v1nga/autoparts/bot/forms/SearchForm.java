@@ -17,7 +17,6 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 import ru.v1nga.autoparts.bot.Utils;
 import ru.v1nga.autoparts.bot.buttons.HomeButton;
 import ru.v1nga.autoparts.bot.buttons.SearchButton;
-import ru.v1nga.autoparts.bot.cards.PartCard;
 import ru.v1nga.autoparts.bot.core.form.BotForm;
 import ru.v1nga.autoparts.bot.core.form.BotFormSession;
 import ru.v1nga.autoparts.entities.PartEntity;
@@ -50,9 +49,7 @@ public class SearchForm extends BotForm {
             EditMessageText
                 .builder()
                 .chatId(chat.getId())
-                .text(
-                    EmojiParser.parseToUnicode(":mag: Введите артикул запчасти")
-                )
+                .text(getSearchFieldText())
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .build()
         );
@@ -137,8 +134,8 @@ public class SearchForm extends BotForm {
                         .builder()
                         .keyboard(
                             List.of(
-                                new InlineKeyboardRow(searchButton.get()),
-                                new InlineKeyboardRow(homeButton.get())
+                                searchButton.getRow(),
+                                homeButton.getRow()
                             )
                         )
                         .build()
@@ -153,6 +150,10 @@ public class SearchForm extends BotForm {
     @Override
     public boolean isCompleted(Chat chat) {
         return getSession(chat.getId()).isComplete();
+    }
+
+    private String getSearchFieldText() {
+        return EmojiParser.parseToUnicode(":mag: Введите артикул запчасти");
     }
 
     @Getter

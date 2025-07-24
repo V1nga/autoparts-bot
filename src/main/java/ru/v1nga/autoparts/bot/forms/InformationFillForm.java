@@ -43,7 +43,7 @@ public class InformationFillForm extends BotForm {
             EditMessageText
                 .builder()
                 .chatId(chat.getId())
-                .text(EmojiParser.parseToUnicode(":bust_in_silhouette: Введите ФИО"))
+                .text(getFullNameFieldText())
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .build()
         );
@@ -59,11 +59,11 @@ public class InformationFillForm extends BotForm {
 
         if(session.getFullName() == null) {
             session.setFullName(message);
-            sendPhoneMessage(chat);
+            send(chat.getId(), getPhoneFieldText());
         } else if(session.getPhoneNumber() == null) {
             if(!Utils.isValidPhoneNumber(message)) {
                 sendError(chat.getId(), "Номер телефона не соответствует формату +7xxxxxxxxxx");
-                sendPhoneMessage(chat);
+                send(chat.getId(), getPhoneFieldText());
             } else {
                 session.setPhoneNumber(message);
                 session.setComplete(true);
@@ -77,13 +77,10 @@ public class InformationFillForm extends BotForm {
                     .chatId(chat.getId())
                     .text(
                         EmojiParser.parseToUnicode(
-                            String.join(
-                            "\n",
-                                List.of(
-                                    ":white_check_mark: Форма успешно заполнена!",
-                                    "Спасибо за предоставленную информацию :blush:",
-                                    "Вы можете продолжить работу с ботом."
-                                )
+                            Utils.buildMultiline(
+                                ":white_check_mark: Форма успешно заполнена!",
+                                "Спасибо за предоставленную информацию :blush:",
+                                "Вы можете продолжить работу с ботом."
                             )
                         )
                     )
@@ -104,13 +101,12 @@ public class InformationFillForm extends BotForm {
         return getSession(chat.getId()).isComplete();
     }
 
-    private void sendPhoneMessage(Chat chat) {
-        SendMessage phoneMessage = SendMessage
-            .builder()
-            .chatId(chat.getId())
-            .text(EmojiParser.parseToUnicode(":telephone: Введите номер телефона в формате +7xxxxxxxxxx"))
-            .build();
-        send(phoneMessage);
+    private String getFullNameFieldText() {
+        return EmojiParser.parseToUnicode(":bust_in_silhouette: Введите ФИО");
+    }
+
+    private String getPhoneFieldText() {
+        return EmojiParser.parseToUnicode(":telephone: Введите номер телефона в формате +7xxxxxxxxxx");
     }
 
     @Getter

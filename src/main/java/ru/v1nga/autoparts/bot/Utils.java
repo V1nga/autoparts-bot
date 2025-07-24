@@ -3,6 +3,7 @@ package ru.v1nga.autoparts.bot;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class Utils {
@@ -54,6 +55,13 @@ public final class Utils {
         }
 
         return text;
+    }
+
+    public static String buildMultiline(String... lines) {
+        return String.join(
+            "\n",
+            List.of(lines)
+        );
     }
 
     public static boolean isValidPhoneNumber(String phoneNumber) {

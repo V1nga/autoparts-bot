@@ -49,10 +49,10 @@ public class DeleteFromCartCallback extends BotCallback {
                     InlineKeyboardMarkup.builder()
                         .keyboard(
                             List.of(
-                                new InlineKeyboardRow(cartButton.get()),
-                                new InlineKeyboardRow(homeButton.get())
+                                cartButton.getRow(),
+                                homeButton.getRow()
                             )
-                            )
+                        )
                         .build()
                 )
                 .build();

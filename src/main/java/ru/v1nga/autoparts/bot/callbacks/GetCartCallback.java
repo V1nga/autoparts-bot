@@ -8,29 +8,24 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.chat.Chat;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
-import ru.v1nga.autoparts.bot.cards.PartCard;
 import ru.v1nga.autoparts.bot.core.callback.BotCallback;
 import ru.v1nga.autoparts.bot.menus.CartMenu;
 import ru.v1nga.autoparts.entities.CartItemEntity;
 import ru.v1nga.autoparts.repositories.CartItemsRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class GetCartCallback extends BotCallback {
 
-    @Autowired
-    private CartItemsRepository cartItemsRepository;
-
-    @Autowired
-    private PartCard partCard;
+    private final CartItemsRepository cartItemsRepository;
 
     @Autowired
     private CartMenu cartMenu;
 
-    public GetCartCallback() {
+    public GetCartCallback(CartItemsRepository cartItemsRepository) {
         super("get-cart");
+        this.cartItemsRepository = cartItemsRepository;
     }
 
     @Override

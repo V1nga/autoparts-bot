@@ -41,7 +41,7 @@ public abstract class BotForm implements IBotForm {
                 .builder()
                 .chatId(chatId)
                 .text(
-                    EmojiParser.parseToUnicode(":x: " + message)
+                    EmojiParser.parseToUnicode(":warning: " + message)
                 )
                 .build()
         );

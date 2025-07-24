@@ -15,14 +15,14 @@ import ru.v1nga.autoparts.repositories.PartsRepository;
 @Component
 public class GetPartDetailsCallback extends BotCallback {
 
-    @Autowired
-    private PartsRepository partsRepository;
+    private final PartsRepository partsRepository;
 
     @Autowired
     private PartCard partCard;
 
-    public GetPartDetailsCallback() {
+    public GetPartDetailsCallback(PartsRepository partsRepository) {
         super("get-part-details");
+        this.partsRepository = partsRepository;
     }
 
     @Override

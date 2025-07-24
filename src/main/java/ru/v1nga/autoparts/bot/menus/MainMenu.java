@@ -27,9 +27,7 @@ public class MainMenu extends Menu {
 
     private List<InlineKeyboardRow> getKeyboard() {
         return List.of(
-            new InlineKeyboardRow(
-                searchButton.get()
-            ),
+            searchButton.getRow(),
             new InlineKeyboardRow(
                 cartButton.get(),
                 InlineKeyboardButton
