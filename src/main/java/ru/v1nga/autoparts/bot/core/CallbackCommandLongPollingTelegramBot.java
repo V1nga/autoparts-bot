@@ -36,7 +36,7 @@ public abstract class CallbackCommandLongPollingTelegramBot extends CommandLongP
 
     @Override
     public final void processNonCommandUpdate(Update update) {
-        if(update.hasCallbackQuery()) {
+        if(update.hasCallbackQuery() && !update.getCallbackQuery().getData().equals("_")) {
             BotCallback callback = callbacks.stream()
                 .filter(botCallback -> botCallback.getCallbackIdentifier().equals(update.getCallbackQuery().getData().split(":")[0]))
                 .findFirst()
@@ -54,6 +54,4 @@ public abstract class CallbackCommandLongPollingTelegramBot extends CommandLongP
             }
         }
     }
-
-    public abstract void processNonCommandOrCallbackUpdate(Update update);
 }
