@@ -78,8 +78,8 @@ public class AddCartForm extends BotForm {
                 PartEntity partEntity = partsRepository.findByNumber(partNumber).orElseThrow();
 
                 CartItemEntity cartItem = cartItemsRepository
-                        .findByUserIdAndPart(user.getId(), partEntity)
-                        .orElseGet(() -> new CartItemEntity(0, user.getId(), partEntity, 0));
+                    .findByUserIdAndPart(user.getId(), partEntity)
+                    .orElseGet(() -> new CartItemEntity(0, user.getId(), partEntity, 0));
                 cartItem.setQuantity(session.getQuantity());
 
                 cartItemsRepository.save(cartItem);

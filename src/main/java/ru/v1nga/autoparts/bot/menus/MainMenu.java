@@ -40,12 +40,12 @@ public class MainMenu extends Menu {
     }
 
     @Override
-    public SendMessage build(long chatId) {
-        return buildMessage(chatId, getTitle(), getKeyboard());
+    public SendMessage compose(long chatId) {
+        return composeMessage(chatId, getTitle(), getKeyboard());
     }
 
     @Override
-    public EditMessageText build(long chatId, int messageId) {
-        return buildMessage(chatId, messageId, getTitle(), getKeyboard());
+    public EditMessageText compose(long chatId, int messageId) {
+        return composeMessage(chatId, messageId, getTitle(), getKeyboard());
     }
 }

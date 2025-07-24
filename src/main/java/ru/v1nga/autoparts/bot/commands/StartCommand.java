@@ -44,7 +44,7 @@ public class StartCommand extends BotCommand {
                     .text(
                         Utils.escapeMarkdownV2(
                             EmojiParser.parseToUnicode(
-                                Utils.buildMultiline(
+                                Utils.composeMultiline(
                                     ":wave: Мы рады видеть вас!",
                                     "",
                                     "Я - бот магазина автозапчастей и помогу вам:",
@@ -81,7 +81,7 @@ public class StartCommand extends BotCommand {
 
                 telegramClient.execute(helloMessage);
             } else {
-                telegramClient.execute(mainMenu.build(chat.getId()));
+                telegramClient.execute(mainMenu.compose(chat.getId()));
             }
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);

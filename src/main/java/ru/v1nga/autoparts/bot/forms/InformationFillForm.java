@@ -77,7 +77,7 @@ public class InformationFillForm extends BotForm {
                     .chatId(chat.getId())
                     .text(
                         EmojiParser.parseToUnicode(
-                            Utils.buildMultiline(
+                            Utils.composeMultiline(
                                 ":white_check_mark: Форма успешно заполнена!",
                                 "Спасибо за предоставленную информацию :blush:",
                                 "Вы можете продолжить работу с ботом."

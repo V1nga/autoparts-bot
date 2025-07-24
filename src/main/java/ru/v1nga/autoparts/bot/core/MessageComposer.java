@@ -7,9 +7,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 import java.util.List;
 
-public abstract class MessageBuilder {
+public abstract class MessageComposer {
 
-    protected SendMessage buildMessage(long chatId, String text, List<InlineKeyboardRow> keyboard) {
+    protected SendMessage composeMessage(long chatId, String text, List<InlineKeyboardRow> keyboard) {
         return SendMessage
             .builder()
             .chatId(chatId)
@@ -23,7 +23,7 @@ public abstract class MessageBuilder {
             .build();
     }
 
-    protected EditMessageText buildMessage(long chatId, int messageId, String text, List<InlineKeyboardRow> keyboard) {
+    protected EditMessageText composeMessage(long chatId, int messageId, String text, List<InlineKeyboardRow> keyboard) {
         return EditMessageText
             .builder()
             .chatId(chatId)

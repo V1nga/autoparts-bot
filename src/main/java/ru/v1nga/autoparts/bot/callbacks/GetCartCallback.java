@@ -36,7 +36,7 @@ public class GetCartCallback extends BotCallback {
 
             int page = callbackParam == null ? 1 : Integer.parseInt(callbackParam);
             EditMessageText cartMenuMessage = cartMenu
-                .build(
+                .compose(
                     chat.getId(),
                     callbackQuery.getMessage().getMessageId(),
                     page,

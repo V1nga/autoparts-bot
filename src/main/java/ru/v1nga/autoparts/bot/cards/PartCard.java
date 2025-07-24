@@ -17,7 +17,7 @@ public class PartCard extends Card<PartEntity> {
 
     private String getBody(PartEntity partEntity) {
         return EmojiParser.parseToUnicode(
-            Utils.buildMultiline(
+            Utils.composeMultiline(
                 ":wrench: Артикул: " + partEntity.getNumber(),
                 ":memo: Описание: " + partEntity.getDescription()
             )
@@ -37,12 +37,12 @@ public class PartCard extends Card<PartEntity> {
     }
 
     @Override
-    public SendMessage build(long chatId, PartEntity partEntity) {
-        return buildMessage(chatId, getBody(partEntity), getKeyboard(partEntity));
+    public SendMessage compose(long chatId, PartEntity partEntity) {
+        return composeMessage(chatId, getBody(partEntity), getKeyboard(partEntity));
     }
 
     @Override
-    public EditMessageText build(long chatId, int messageId, PartEntity partEntity) {
-        return buildMessage(chatId, messageId, getBody(partEntity), getKeyboard(partEntity));
+    public EditMessageText compose(long chatId, int messageId, PartEntity partEntity) {
+        return composeMessage(chatId, messageId, getBody(partEntity), getKeyboard(partEntity));
     }
 }

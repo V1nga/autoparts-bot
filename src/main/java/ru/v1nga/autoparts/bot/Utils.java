@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class Utils {
+
     public static String pluralize(int count, String one, String few, String many) {
         int mod10 = count % 10;
         int mod100 = count % 100;
@@ -57,7 +58,7 @@ public final class Utils {
         return text;
     }
 
-    public static String buildMultiline(String... lines) {
+    public static String composeMultiline(String... lines) {
         return String.join(
             "\n",
             List.of(lines)

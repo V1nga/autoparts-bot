@@ -25,7 +25,7 @@ public class GetMenuCallback extends BotCallback {
     public void execute(TelegramClient telegramClient, User user, Chat chat, CallbackQuery callbackQuery) {
         try {
             EditMessageText menuMessage = mainMenu
-                .build(
+                .compose(
                     chat.getId(),
                     callbackQuery.getMessage().getMessageId()
                 );

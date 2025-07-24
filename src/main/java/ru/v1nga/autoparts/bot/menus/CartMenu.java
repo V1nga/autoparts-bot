@@ -28,7 +28,7 @@ public class CartMenu extends PaginationMenu<CartItemEntity> {
         if(cartItemEntities.isEmpty()) {
             return
                 EmojiParser.parseToUnicode(
-                    Utils.buildMultiline(
+                    Utils.composeMultiline(
                         title,
                         "",
                         "Тут пока ничего нет! Добавьте что-нибудь :blush:"
@@ -92,12 +92,12 @@ public class CartMenu extends PaginationMenu<CartItemEntity> {
     }
 
     @Override
-    public SendMessage build(long chatId, int page, List<CartItemEntity> cartItemEntities) {
-        return buildMessage(chatId, getTitle(cartItemEntities), getKeyboard(page, cartItemEntities));
+    public SendMessage compose(long chatId, int page, List<CartItemEntity> cartItemEntities) {
+        return composeMessage(chatId, getTitle(cartItemEntities), getKeyboard(page, cartItemEntities));
     }
 
     @Override
-    public EditMessageText build(long chatId, int messageId, int page, List<CartItemEntity> cartItemEntities) {
-        return buildMessage(chatId, messageId, getTitle(cartItemEntities), getKeyboard(page, cartItemEntities));
+    public EditMessageText compose(long chatId, int messageId, int page, List<CartItemEntity> cartItemEntities) {
+        return composeMessage(chatId, messageId, getTitle(cartItemEntities), getKeyboard(page, cartItemEntities));
     }
 }

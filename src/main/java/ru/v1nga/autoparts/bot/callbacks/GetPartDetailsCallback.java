@@ -31,7 +31,9 @@ public class GetPartDetailsCallback extends BotCallback {
             String partNumber = getCallbackData(callbackQuery);
             PartEntity partEntity = partsRepository.findByNumber(partNumber).orElseThrow();
 
-            telegramClient.execute(partCard.build(chat.getId(), callbackQuery.getMessage().getMessageId(), partEntity));
+            telegramClient.execute(
+                partCard.compose(chat.getId(), callbackQuery.getMessage().getMessageId(), partEntity)
+            );
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
