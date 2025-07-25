@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 import ru.v1nga.autoparts.bot.buttons.CartButton;
+import ru.v1nga.autoparts.bot.buttons.OrdersButton;
 import ru.v1nga.autoparts.bot.buttons.SearchButton;
 import ru.v1nga.autoparts.bot.core.menu.Menu;
 
@@ -20,6 +20,8 @@ public class MainMenu extends Menu {
     private CartButton cartButton;
     @Autowired
     private SearchButton searchButton;
+    @Autowired
+    private OrdersButton ordersButton;
 
     private String getTitle() {
         return EmojiParser.parseToUnicode(":gear: Магазин \"Autoparts\" :gear:");
@@ -30,11 +32,7 @@ public class MainMenu extends Menu {
             searchButton.getRow(),
             new InlineKeyboardRow(
                 cartButton.get(),
-                InlineKeyboardButton
-                    .builder()
-                    .text(EmojiParser.parseToUnicode(":package: Заказы"))
-                    .callbackData("search:test")
-                    .build()
+                ordersButton.get()
             )
         );
     }

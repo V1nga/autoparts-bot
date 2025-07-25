@@ -59,10 +59,13 @@ public final class Utils {
     }
 
     public static String composeMultiline(String... lines) {
-        return String.join(
-            "\n",
-            List.of(lines)
-        );
+        return composeMultiline(1, lines);
+    }
+
+    public static String composeMultiline(int lineBreakCount, String... lines) {
+        String separator = "\n".repeat(Math.max(1, lineBreakCount));
+
+        return String.join(separator, List.of(lines));
     }
 
     public static boolean isValidPhoneNumber(String phoneNumber) {

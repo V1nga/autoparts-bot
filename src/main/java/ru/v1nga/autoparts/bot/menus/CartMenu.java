@@ -43,6 +43,7 @@ public class CartMenu extends PaginationMenu<CartItemEntity> {
     private List<InlineKeyboardRow> getKeyboard(int page, List<CartItemEntity> cartItemEntities) {
         InlineKeyboardRow paginationButtons = getPaginationButton(page, cartItemEntities.size());
         InlineKeyboardRow clearCartButton = getClearCartButton(cartItemEntities.size());
+        InlineKeyboardRow orderCartButton = getOrderButton(cartItemEntities.size());
 
         List<InlineKeyboardRow> buttons = getItems(page, cartItemEntities)
             .stream()
@@ -92,11 +93,26 @@ public class CartMenu extends PaginationMenu<CartItemEntity> {
 
         List<InlineKeyboardRow> footerButtons = List.of(
             paginationButtons,
+            orderCartButton,
             clearCartButton,
             homeButton.getRow()
         );
 
         return Stream.concat(buttons.stream(), footerButtons.stream()).toList();
+    }
+
+    private InlineKeyboardRow getOrderButton(int totalItems) {
+        if(totalItems > 0) {
+            return new InlineKeyboardRow(
+                InlineKeyboardButton
+                    .builder()
+                    .text(EmojiParser.parseToUnicode(":package: Оформить заказ"))
+                    .callbackData("make-order")
+                    .build()
+            );
+        } else {
+            return new InlineKeyboardRow();
+        }
     }
 
     private InlineKeyboardRow getClearCartButton(int totalItems) {

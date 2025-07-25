@@ -37,6 +37,12 @@ public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
     private GetPartDetailsCallback getPartDetailsCallback;
     @Autowired
     private InformationFillCallback informationFillCallback;
+    @Autowired
+    private MakeOrderCallback makeOrderCallback;
+    @Autowired
+    private GetOrderCallback getOrderCallback;
+    @Autowired
+    private GetOrdersCallback getOrdersCallback;
 
     @Autowired
     private SearchForm searchForm;
@@ -63,6 +69,9 @@ public class AutopartsBot extends CallbackCommandLongPollingTelegramBot {
         registerCallback(getMenuCallback);
         registerCallback(getPartDetailsCallback);
         registerCallback(informationFillCallback);
+        registerCallback(makeOrderCallback);
+        registerCallback(getOrderCallback);
+        registerCallback(getOrdersCallback);
 
         registerForm(searchForm);
         registerForm(addCartForm);
