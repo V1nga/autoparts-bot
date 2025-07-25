@@ -49,9 +49,13 @@ public class OrdersMenu extends PaginationMenu<OrderEntity> {
                     InlineKeyboardButton
                         .builder()
                         .text(
-                            orderEntity
-                                .getCreatedAt()
-                                .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
+                            String.format(
+                                "%s, Заказ №%d",
+                                orderEntity
+                                    .getCreatedAt()
+                                    .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
+                                orderEntity.getId()
+                            )
                         )
                         .callbackData("get-order:" + orderEntity.getId())
                         .build()

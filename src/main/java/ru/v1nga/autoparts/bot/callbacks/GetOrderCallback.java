@@ -16,6 +16,7 @@ import ru.v1nga.autoparts.bot.core.callback.BotCallback;
 import ru.v1nga.autoparts.entities.OrderEntity;
 import ru.v1nga.autoparts.repositories.OrdersRepository;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +47,13 @@ public class GetOrderCallback extends BotCallback {
                     .text(
                         Utils.composeMultiline(
                             2,
-                            EmojiParser.parseToUnicode(":package: Заказ №" + orderEntity.get().getId()),
+                            EmojiParser.parseToUnicode(
+                                Utils.composeMultiline(
+                                    ":package: Заказ №" + orderEntity.get().getId(),
+                                        ":calendar: Дата создания: " + orderEntity.get().getCreatedAt().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
+                                        ":information_source: Статус: " + orderEntity.get().getStatus()
+                                )
+                            ),
                             Utils.composeMultiline(
                                 2,
                                 orderEntity
@@ -60,7 +67,7 @@ public class GetOrderCallback extends BotCallback {
                                         return EmojiParser.parseToUnicode(
                                             Utils.composeMultiline(
                                                 ":wrench: Артикул: " + partNumber,
-                                                ":input_numbers: Количество: " + quantity
+                                                ":1234: Количество: " + quantity
                                             )
                                         );
                                     })

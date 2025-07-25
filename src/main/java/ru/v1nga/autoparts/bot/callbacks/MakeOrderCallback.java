@@ -21,6 +21,7 @@ import ru.v1nga.autoparts.entities.OrderItemEntity;
 import ru.v1nga.autoparts.repositories.CartItemsRepository;
 import ru.v1nga.autoparts.repositories.OrdersRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -50,13 +51,16 @@ public class MakeOrderCallback extends BotCallback {
                     0,
                     user.getId(),
                     OrderEntity.OrderStatus.NEW,
+                    new ArrayList<>(),
+                    null
+                );
+                order.setOrders(
                     cartItems
                         .stream()
                         .map(cartItem ->
-                            new OrderItemEntity(0, cartItem.getPart(), cartItem.getQuantity(), null)
+                            new OrderItemEntity(0, cartItem.getPart(), cartItem.getQuantity(), order)
                         )
-                        .toList(),
-                    null
+                        .toList()
                 );
 
                 ordersRepository.save(order);
